@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>Personal Invitation — Exclusive Member Access</title>
+<style>
+:root{
+  --bg:#000000;
+  --surface:#0a0a0a;
+  --card:#111111;
+  --border:#222222;
+  --border-gold:rgba(212,168,67,.3);
+  --gold:#d4a843;
+  --gold-light:#f0c96a;
+  --gold-dim:rgba(212,168,67,.1);
+  --white:#f5f0e8;
+  --muted:#7a7060;
+  --text:#c8b89a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  background:var(--bg);
+  color:var(--white);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* invitation envelope line at very top */
+.invite-line{
+  height:3px;
+  background:linear-gradient(90deg,transparent 0%,var(--gold) 25%,var(--gold-light) 50%,var(--gold) 75%,transparent 100%);
+}
+
+/* header */
+.site-header{
+  padding:20px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);
+}
+.logo-text{
+  font-size:15px;font-weight:700;letter-spacing:.12em;
+  color:var(--gold);
+}
+.header-right{
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;color:var(--muted);letter-spacing:.04em;
+}
+.live-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:bl 1.4s infinite;}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* Slot counter bar */
+.slot-bar{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:10px 24px;
+  text-align:center;
+  font-size:13px;color:var(--muted);
+  letter-spacing:.01em;
+}
+.slot-count{color:var(--gold);font-weight:700;font-size:15px;}
+
+/* main layout */
+.page{
+  max-width:720px;margin:0 auto;
+  padding:56px 24px 64px;
+}
+
+/* Seal / emblem */
+.seal-wrap{text-align:center;margin-bottom:40px;}
+.seal{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:80px;height:80px;border-radius:50%;
+  border:1.5px solid var(--border-gold);
+  background:radial-gradient(circle,#1a1500,#000);
+  font-size:36px;
+  box-shadow:
+    0 0 0 8px rgba(212,168,67,.04),
+    0 0 0 16px rgba(212,168,67,.02),
+    0 0 30px rgba(212,168,67,.15);
+}
+
+/* Invitation heading */
+.invite-label{
+  text-align:center;
+  font-size:11px;letter-spacing:.18em;color:var(--gold);
+  margin-bottom:16px;
+}
+.main-title{
+  text-align:center;
+  font-size:clamp(26px,6vw,44px);
+  font-weight:700;
+  color:var(--white);
+  line-height:1.1;
+  margin-bottom:14px;
+  letter-spacing:-.02em;
+}
+.main-title em{
+  font-style:normal;
+  background:linear-gradient(135deg,var(--gold-light),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.main-sub{
+  text-align:center;
+  font-size:clamp(15px,3vw,17px);
+  color:var(--text);line-height:1.65;
+  max-width:520px;margin:0 auto 44px;
+}
+
+/* Divider */
+.divider{
+  display:flex;align-items:center;gap:16px;margin-bottom:40px;
+}
+.div-line{flex:1;height:1px;background:var(--border);}
+.div-icon{color:var(--gold);font-size:14px;letter-spacing:3px;}
+
+/* Countdown */
+.countdown-label{
+  text-align:center;font-size:11px;letter-spacing:.14em;
+  color:var(--muted);margin-bottom:14px;
+}
+.countdown{
+  display:flex;justify-content:center;align-items:baseline;
+  gap:6px;margin-bottom:8px;
+}
+.c-unit{display:flex;flex-direction:column;align-items:center;min-width:52px;}
+.c-num{
+  font-size:38px;font-weight:800;
+  color:var(--gold);letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;
+  line-height:1;
+}
+.c-sep{font-size:32px;font-weight:300;color:var(--border);padding-bottom:20px;}
+.c-lbl{font-size:10px;color:var(--muted);margin-top:5px;letter-spacing:.08em;}
+.expire-sub{text-align:center;font-size:13px;color:var(--muted);margin-bottom:40px;}
+
+/* Benefits list */
+.benefits{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:28px 28px;
+  margin-bottom:36px;
+}
+.benefits-title{
+  font-size:11px;letter-spacing:.14em;color:var(--gold);
+  margin-bottom:20px;
+}
+.benefit-item{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:13px 0;
+  border-bottom:1px solid var(--border);
+}
+.benefit-item:last-child{border-bottom:none;padding-bottom:0;}
+.benefit-item:first-child{padding-top:0;}
+.b-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.b-text{}
+.b-name{font-size:15px;font-weight:600;color:var(--white);margin-bottom:2px;}
+.b-desc{font-size:13px;color:var(--muted);line-height:1.5;}
+
+/* CTA */
+.cta-wrap{text-align:center;margin-bottom:24px;}
+.cta-main{
+  display:inline-block;
+  padding:18px 52px;border-radius:8px;
+  background:linear-gradient(130deg,var(--gold-light),var(--gold));
+  color:#0a0800;font-size:17px;font-weight:800;
+  text-decoration:none;letter-spacing:-.01em;
+  box-shadow:0 8px 32px rgba(212,168,67,.35),0 2px 8px rgba(0,0,0,.4);
+  transition:transform .13s,box-shadow .13s;
+  width:100%;max-width:400px;
+  text-align:center;
+}
+.cta-main:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 42px rgba(212,168,67,.45),0 4px 12px rgba(0,0,0,.4);
+}
+.cta-trust{
+  display:flex;justify-content:center;align-items:center;
+  gap:18px;flex-wrap:wrap;
+  font-size:12px;color:var(--muted);margin-top:14px;
+}
+.cta-trust span{display:flex;align-items:center;gap:5px;}
+
+/* Testimonials */
+.testimonials{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;
+  margin-bottom:44px;
+}
+@media(max-width:520px){.testimonials{grid-template-columns:1fr;}}
+.testi{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:18px;
+}
+.testi-stars{color:var(--gold);font-size:13px;letter-spacing:2px;margin-bottom:8px;}
+.testi-text{font-size:13px;color:var(--text);line-height:1.6;margin-bottom:12px;}
+.testi-author{font-size:12px;color:var(--muted);}
+.testi-author strong{color:var(--gold-light);}
+
+/* footer */
+.page-footer{
+  text-align:center;padding:24px 20px;
+  border-top:1px solid var(--border);
+  font-size:12px;color:var(--muted);
+}
+.page-footer a{color:var(--muted);text-decoration:underline;margin:0 7px;}
+
+/* POPUP */
+.overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.88);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;
+  padding:20px;z-index:9999;
+  opacity:0;transition:opacity .3s ease;
+}
+.overlay.visible{display:flex;}
+.overlay.show{opacity:1;}
+.modal{
+  background:var(--card);
+  border:1px solid var(--border-gold);
+  border-radius:14px;padding:38px 28px 28px;
+  max-width:480px;width:100%;text-align:center;position:relative;
+  transform:translateY(22px) scale(.96);opacity:0;
+  transition:transform .38s cubic-bezier(.22,.68,0,1.2),opacity .3s ease;
+  box-shadow:0 0 60px rgba(212,168,67,.12),0 30px 70px rgba(0,0,0,.7);
+}
+.overlay.show .modal{transform:translateY(0) scale(1);opacity:1;}
+.mx{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;}
+.mx:hover{color:var(--white);}
+.m-invite{
+  font-size:10px;letter-spacing:.16em;color:var(--gold);margin-bottom:12px;
+}
+.m-title{font-size:21px;font-weight:700;color:var(--white);margin-bottom:6px;}
+.m-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.5;}
+.m-timer{display:flex;justify-content:center;align-items:baseline;gap:8px;margin-bottom:6px;}
+.m-unit{display:flex;flex-direction:column;align-items:center;}
+.m-num{font-size:30px;font-weight:800;color:var(--gold);min-width:44px;text-align:center;font-variant-numeric:tabular-nums;}
+.m-lbl{font-size:10px;color:var(--muted);margin-top:3px;letter-spacing:.06em;}
+.m-sep{font-size:26px;font-weight:300;color:var(--border);padding-bottom:18px;}
+.m-expire{font-size:12px;color:var(--muted);margin-bottom:20px;}
+.m-actions{display:flex;gap:12px;flex-wrap:wrap;}
+.m-btn{
+  flex:1;min-width:130px;padding:15px;
+  border-radius:8px;font-size:15px;font-weight:700;
+  border:none;cursor:pointer;text-decoration:none;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .12s,opacity .12s;
+}
+.m-btn:hover{transform:translateY(-1px);opacity:.9;}
+.m-btn.pri{background:linear-gradient(130deg,var(--gold-light),var(--gold));color:#0a0800;}
+.m-btn.sec{background:rgba(255,255,255,.05);color:var(--text);border:1px solid var(--border);}
+.m-footer{margin-top:14px;font-size:11px;color:rgba(122,112,96,.5);}
+.m-footer a{color:inherit;text-decoration:underline;margin:0 4px;}
+
+@media(max-width:440px){.cta-main{padding:17px 24px;}}
+</style>
+</head>
+<body>
+
+<div class="invite-line"></div>
+
+<div class="site-header">
+  <div class="logo-text">ELITE ACCESS</div>
+  <div class="header-right">
+    <div class="live-dot"></div>
+    <span>Members Online Now</span>
+  </div>
+</div>
+
+<div class="slot-bar">
+  <span class="slot-count" id="slotCount">47</span> spots remaining out of 500 — offer closes when full
+</div>
+
+<div class="page">
+
+  <div class="seal-wrap"><div class="seal">👑</div></div>
+  <div class="invite-label">PERSONAL INVITATION</div>
+  <h1 class="main-title">You Have Been<br><em>Personally Selected</em></h1>
+  <p class="main-sub">This invitation was not sent publicly. A limited number of individuals have been hand-picked for exclusive access to our member platform — you are one of them.</p>
+
+  <div class="divider">
+    <div class="div-line"></div>
+    <div class="div-icon">✦ ✦ ✦</div>
+    <div class="div-line"></div>
+  </div>
+
+  <div class="countdown-label">YOUR INVITATION EXPIRES IN</div>
+  <div class="countdown">
+    <div class="c-unit"><span class="c-num" id="cD">02</span><span class="c-lbl">DAYS</span></div>
+    <span class="c-sep">:</span>
+    <div class="c-unit"><span class="c-num" id="cH">23</span><span class="c-lbl">HOURS</span></div>
+    <span class="c-sep">:</span>
+    <div class="c-unit"><span class="c-num" id="cM">59</span><span class="c-lbl">MINUTES</span></div>
+    <span class="c-sep">:</span>
+    <div class="c-unit"><span class="c-num" id="cS">59</span><span class="c-lbl">SECONDS</span></div>
+  </div>
+  <p class="expire-sub">After expiry, your spot will be offered to the next person on the waitlist.</p>
+
+  <div class="benefits">
+    <div class="benefits-title">WHAT YOUR MEMBERSHIP INCLUDES</div>
+    <div class="benefit-item">
+      <div class="b-icon">💰</div>
+      <div class="b-text">
+        <div class="b-name">Verified Income Streams</div>
+        <div class="b-desc">Access to thoroughly vetted digital income opportunities paying out globally — tested and confirmed by our team.</div>
+      </div>
+    </div>
+    <div class="benefit-item">
+      <div class="b-icon">🌍</div>
+      <div class="b-text">
+        <div class="b-name">Available in 150+ Countries</div>
+        <div class="b-desc">No geographic restrictions. Whether you're in Asia, Europe, or the Americas — this works for you.</div>
+      </div>
+    </div>
+    <div class="benefit-item">
+      <div class="b-icon">⚡</div>
+      <div class="b-text">
+        <div class="b-name">Instant Activation</div>
+        <div class="b-desc">No waiting period. Your access is activated immediately upon claiming, with no documents required.</div>
+      </div>
+    </div>
+    <div class="benefit-item">
+      <div class="b-icon">🔒</div>
+      <div class="b-text">
+        <div class="b-name">Completely Free to Claim</div>
+        <div class="b-desc">No credit card, no deposit, no hidden fees. This invitation is your only cost of entry.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-wrap">
+    <a href="#" id="mainCta" class="cta-main">Accept Invitation & Claim Access</a>
+    <div class="cta-trust">
+      <span>🔒 Secure</span>
+      <span>✓ Zero Cost</span>
+      <span>✓ Instant Access</span>
+      <span>✓ Cancel Anytime</span>
+    </div>
+  </div>
+
+  <div class="testimonials">
+    <div class="testi">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"I was skeptical but I claimed my spot anyway. Within 48 hours I had my first payout. Completely changed my perspective."</p>
+      <div class="testi-author"><strong>Marcus T.</strong> · Germany</div>
+    </div>
+    <div class="testi">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Never seen anything so straightforward. Setup took less than 10 minutes and I was earning the same day."</p>
+      <div class="testi-author"><strong>Priya S.</strong> · Singapore</div>
+    </div>
+    <div class="testi">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"I shared this with 3 friends. All of them are now earning consistently. This is the real deal."</p>
+      <div class="testi-author"><strong>Diego R.</strong> · Brazil</div>
+    </div>
+    <div class="testi">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"The payout hit my account within hours. I've been using this platform for 4 months now without a single issue."</p>
+      <div class="testi-author"><strong>Aisha K.</strong> · UAE</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-footer">
+  <div>© 2026 Elite Access. All rights reserved.</div>
+  <div style="margin-top:8px"><a href="#">Privacy Policy</a><a href="#">Terms</a><a href="#">Legal</a></div>
+</div>
+
+<!-- POPUP -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="mx" id="mx">×</button>
+    <div class="m-invite">INVITATION NOTICE</div>
+    <div class="m-title">Your Spot is Reserved</div>
+    <div class="m-sub">This exclusive access was reserved for you. Confirm now to secure your place before the timer expires.</div>
+    <div class="m-timer">
+      <div class="m-unit"><span class="m-num" id="mD">02</span><span class="m-lbl">DAYS</span></div>
+      <span class="m-sep">:</span>
+      <div class="m-unit"><span class="m-num" id="mH">23</span><span class="m-lbl">HRS</span></div>
+      <span class="m-sep">:</span>
+      <div class="m-unit"><span class="m-num" id="mM">59</span><span class="m-lbl">MIN</span></div>
+      <span class="m-sep">:</span>
+      <div class="m-unit"><span class="m-num" id="mS">59</span><span class="m-lbl">SEC</span></div>
+    </div>
+    <p class="m-expire">Offer Expire Soon</p>
+    <div class="m-actions">
+      <a href="#" id="contBtn" class="m-btn pri">Accept Invitation →</a>
+      <a href="#" id="closeBtn" class="m-btn sec">Decline</a>
+    </div>
+    <div class="m-footer"><a href="#">Privacy</a>|<a href="#">Legal</a>|<a href="#">Terms</a></div>
+  </div>
+</div>
+
+<script>
+// ===== GANTI LINK DI SINI =====
+const LINK_CONTINUE = "https://YOUR-SMARTLINK.com/xxxxx";
+const LINK_CLOSE    = "https://YOUR-SMARTLINK.com/yyyyy";
+// ==============================
+
+document.getElementById('mainCta').href = LINK_CONTINUE;
+document.getElementById('contBtn').href = LINK_CONTINUE;
+document.getElementById('closeBtn').href = LINK_CLOSE;
+
+// Slot counter yang perlahan berkurang
+let slots = 47;
+function decrementSlot(){
+  if(slots > 5 && Math.random() < 0.4){
+    slots--;
+    document.getElementById('slotCount').textContent = slots;
+  }
+}
+setInterval(decrementSlot, 18000);
+
+// Countdown main page
+let tot2 = 2*86400+23*3600+59*60+59;
+function pad(n){return String(n).padStart(2,'0');}
+function tickPage(){
+  if(tot2>0)tot2--;
+  document.getElementById('cD').textContent=pad(Math.floor(tot2/86400));
+  document.getElementById('cH').textContent=pad(Math.floor((tot2%86400)/3600));
+  document.getElementById('cM').textContent=pad(Math.floor((tot2%3600)/60));
+  document.getElementById('cS').textContent=pad(tot2%60);
+}
+tickPage(); setInterval(tickPage,1000);
+
+// Popup
+const overlay = document.getElementById('overlay');
+let shown = false;
+let tot = 2*86400+23*3600+59*60+59, iv = null;
+
+function tickModal(){
+  if(tot>0)tot--;
+  document.getElementById('mD').textContent=pad(Math.floor(tot/86400));
+  document.getElementById('mH').textContent=pad(Math.floor((tot%86400)/3600));
+  document.getElementById('mM').textContent=pad(Math.floor((tot%3600)/60));
+  document.getElementById('mS').textContent=pad(tot%60);
+}
+function startTimer(){if(!iv){tickModal();iv=setInterval(tickModal,1000);}}
+
+function openPopup(){
+  if(shown)return; shown=true;
+  overlay.classList.add('visible');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>overlay.classList.add('show')));
+  startTimer();
+}
+function closePopup(){
+  overlay.classList.remove('show');
+  setTimeout(()=>{overlay.classList.remove('visible');shown=false;},300);
+}
+document.getElementById('mx').addEventListener('click',e=>{e.preventDefault();closePopup();});
+overlay.addEventListener('click',e=>{if(e.target===overlay)closePopup();});
+
+setTimeout(openPopup,1200);
+if(window.innerWidth>=768){
+  document.addEventListener('mouseout',e=>{if(!e.relatedTarget&&e.clientY<=0)openPopup();});
+} else { setTimeout(openPopup,16000); }
+</script>
+</body>
+</html>
