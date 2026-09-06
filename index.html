@@ -207,28 +207,21 @@ body{
 }
 .page-footer a{color:var(--muted);text-decoration:underline;margin:0 7px;}
 
-/* POPUP */
+/* POPUP FIXED FOCUS */
 .overlay{
   position:fixed;inset:0;
-  background:rgba(0,0,0,.88);backdrop-filter:blur(6px);
-  display:none;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.92);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
   padding:20px;z-index:9999;
-  opacity:0;transition:opacity .3s ease;
+  opacity:1;
 }
-.overlay.visible{display:flex;}
-.overlay.show{opacity:1;}
 .modal{
   background:var(--card);
   border:1px solid var(--border-gold);
   border-radius:14px;padding:38px 28px 28px;
   max-width:480px;width:100%;text-align:center;position:relative;
-  transform:translateY(22px) scale(.96);opacity:0;
-  transition:transform .38s cubic-bezier(.22,.68,0,1.2),opacity .3s ease;
-  box-shadow:0 0 60px rgba(212,168,67,.12),0 30px 70px rgba(0,0,0,.7);
+  box-shadow:0 0 60px rgba(212,168,67,.15),0 30px 70px rgba(0,0,0,.8);
 }
-.overlay.show .modal{transform:translateY(0) scale(1);opacity:1;}
-.mx{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;}
-.mx:hover{color:var(--white);}
 .m-invite{
   font-size:10px;letter-spacing:.16em;color:var(--gold);margin-bottom:12px;
 }
@@ -370,10 +363,9 @@ body{
   <div style="margin-top:8px"><a href="#">Privacy Policy</a><a href="#">Terms</a><a href="#">Legal</a></div>
 </div>
 
-<!-- POPUP -->
+<!-- POPUP LOCKED FOCUS -->
 <div class="overlay" id="overlay">
   <div class="modal">
-    <button class="mx" id="mx">×</button>
     <div class="m-invite">INVITATION NOTICE</div>
     <div class="m-title">Your Spot is Reserved</div>
     <div class="m-sub">This exclusive access was reserved for you. Confirm now to secure your place before the timer expires.</div>
@@ -396,16 +388,16 @@ body{
 </div>
 
 <script>
-// ===== GANTI LINK DI SINI =====
-const LINK_CONTINUE = "https://YOUR-SMARTLINK.com/xxxxx";
-const LINK_CLOSE    = "https://YOUR-SMARTLINK.com/yyyyy";
-// ==============================
+// ===== MASUKKAN SMARTLINK ANDA DI SINI =====
+const LINK_CONTINUE = "https://smartlink-anda.com/link-1";
+const LINK_CLOSE    = "https://smartlink-anda.com/link-2";
+// ============================================
 
 document.getElementById('mainCta').href = LINK_CONTINUE;
 document.getElementById('contBtn').href = LINK_CONTINUE;
 document.getElementById('closeBtn').href = LINK_CLOSE;
 
-// Slot counter yang perlahan berkurang
+// Slot counter
 let slots = 47;
 function decrementSlot(){
   if(slots > 5 && Math.random() < 0.4){
@@ -427,11 +419,8 @@ function tickPage(){
 }
 tickPage(); setInterval(tickPage,1000);
 
-// Popup
-const overlay = document.getElementById('overlay');
-let shown = false;
-let tot = 2*86400+23*3600+59*60+59, iv = null;
-
+// Timer Modal Popup
+let tot = 2*86400+23*3600+59*60+59;
 function tickModal(){
   if(tot>0)tot--;
   document.getElementById('mD').textContent=pad(Math.floor(tot/86400));
@@ -439,25 +428,8 @@ function tickModal(){
   document.getElementById('mM').textContent=pad(Math.floor((tot%3600)/60));
   document.getElementById('mS').textContent=pad(tot%60);
 }
-function startTimer(){if(!iv){tickModal();iv=setInterval(tickModal,1000);}}
-
-function openPopup(){
-  if(shown)return; shown=true;
-  overlay.classList.add('visible');
-  requestAnimationFrame(()=>requestAnimationFrame(()=>overlay.classList.add('show')));
-  startTimer();
-}
-function closePopup(){
-  overlay.classList.remove('show');
-  setTimeout(()=>{overlay.classList.remove('visible');shown=false;},300);
-}
-document.getElementById('mx').addEventListener('click',e=>{e.preventDefault();closePopup();});
-overlay.addEventListener('click',e=>{if(e.target===overlay)closePopup();});
-
-setTimeout(openPopup,1200);
-if(window.innerWidth>=768){
-  document.addEventListener('mouseout',e=>{if(!e.relatedTarget&&e.clientY<=0)openPopup();});
-} else { setTimeout(openPopup,16000); }
+tickModal();
+setInterval(tickModal,1000);
 </script>
 </body>
 </html>
