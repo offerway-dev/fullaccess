@@ -281,7 +281,7 @@ body{
 
   <div class="countdown-label">YOUR CASH CLAIM EXPIRES IN</div>
   <div class="countdown">
-    <div class="c-unit"><span class="c-num" id="cM">4</span><span class="c-lbl">MINUTES</span></div>
+    <div class="c-unit"><span class="c-num" id="cM">04</span><span class="c-lbl">MINUTES</span></div>
     <span class="c-sep">:</span>
     <div class="c-unit"><span class="c-num" id="cS">59</span><span class="c-lbl">SECONDS</span></div>
   </div>
@@ -366,7 +366,7 @@ body{
     <div class="m-title">Your $500 Cash is Waiting</div>
     <div class="m-sub">Your digital cash spot is reserved. Confirm your claim now before your timer expires and the reward is passed on.</div>
     <div class="m-timer">
-      <div class="m-unit"><span class="m-num" id="mM">4</span><span class="m-lbl">MIN</span></div>
+      <div class="m-unit"><span class="m-num" id="mM">04</span><span class="m-lbl">MIN</span></div>
       <span class="m-sep">:</span>
       <div class="m-unit"><span class="m-num" id="mS">59</span><span class="m-lbl">SEC</span></div>
     </div>
@@ -389,7 +389,7 @@ document.getElementById('mainCta').href = LINK_CONTINUE;
 document.getElementById('contBtn').href = LINK_CONTINUE;
 document.getElementById('closeBtn').href = LINK_CLOSE;
 
-// Slot counter
+// Slot counter (Efek Angka Berkurang)
 let slots = 47;
 function decrementSlot(){
   if(slots > 5 && Math.random() < 0.4){
@@ -399,29 +399,28 @@ function decrementSlot(){
 }
 setInterval(decrementSlot, 18000);
 
-// Countdown main page
-let tot2 = 2*86400+23*3600+59*60+59;
+// Setel waktu ke 4 Menit 59 Detik (299 Detik)
+let totalSeconds = 299; 
 function pad(n){return String(n).padStart(2,'0');}
-function tickPage(){
-  if(tot2>0)tot2--;
-  document.getElementById('cD').textContent=pad(Math.floor(tot2/86400));
-  document.getElementById('cH').textContent=pad(Math.floor((tot2%86400)/3600));
-  document.getElementById('cM').textContent=pad(Math.floor((tot2%3600)/60));
-  document.getElementById('cS').textContent=pad(tot2%60);
-}
-tickPage(); setInterval(tickPage,1000);
 
-// Timer Modal Popup
-let tot = 2*86400+23*3600+59*60+59;
-function tickModal(){
-  if(tot>0)tot--;
-  document.getElementById('mD').textContent=pad(Math.floor(tot/86400));
-  document.getElementById('mH').textContent=pad(Math.floor((tot%86400)/3600));
-  document.getElementById('mM').textContent=pad(Math.floor((tot%3600)/60));
-  document.getElementById('mS').textContent=pad(tot%60);
+function tickAll(){
+  if(totalSeconds > 0) totalSeconds--;
+  
+  let m = pad(Math.floor(totalSeconds / 60));
+  let s = pad(totalSeconds % 60);
+  
+  // Update timer di halaman utama (Background)
+  document.getElementById('cM').textContent = m;
+  document.getElementById('cS').textContent = s;
+  
+  // Update timer di dalam Modal Popup (Yang hitam)
+  document.getElementById('mM').textContent = m;
+  document.getElementById('mS').textContent = s;
 }
-tickModal();
-setInterval(tickModal,1000);
+
+// Jalankan timer pertama kali, lalu ulangi setiap 1000ms (1 detik)
+tickAll();
+setInterval(tickAll, 1000);
 </script>
 </body>
 </html>
